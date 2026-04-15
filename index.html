@@ -1,4 +1,248 @@
-t-weight: 300;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --dark: #0f0f1a;
+            --darker: #0a0a12;
+            --card: #1a1a2e;
+            --card-hover: #252542;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            --gradient-2: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--darker);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-5%, -5%) rotate(5deg); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 70%; animation-delay: 6s; }
+        .particle:nth-child(5) { left: 90%; animation-delay: 8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(15, 15, 26, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--accent);
+        }
+
+        .nav-item i {
+            font-size: 0.9rem;
+            transition: transform 0.3s;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card);
+            border-radius: 20px;
+            padding: 1rem;
+            min-width: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .nav-item:hover .dropdown,
+        .dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-item:hover {
+            background: var(--gradient-1);
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .main-title {
+            font-size: 8rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.5)); }
+            50% { filter: drop-shadow(0 0 60px rgba(236, 72, 153, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-weight: 300;
         }
 
         .members-box {
@@ -81,7 +325,6 @@ t-weight: 300;
             box-shadow: 0 20px 40px rgba(124, 58, 237, 0.6);
         }
 
-        /* Subject Pages */
         .subject-page {
             padding: 120px 5% 5rem;
             max-width: 1400px;
@@ -126,17 +369,18 @@ t-weight: 300;
 
         .image-showcase {
             width: 100%;
+            max-width: 800px;
             border-radius: 20px;
-            margin: 2rem 0;
+            margin: 2rem auto;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s;
+            display: block;
         }
 
         .image-showcase:hover {
             transform: scale(1.02);
         }
 
-        /* Schedule Page Specific */
         .schedule-container {
             max-width: 900px;
             margin: 0 auto;
@@ -185,7 +429,6 @@ t-weight: 300;
             font-size: 1rem;
         }
 
-        /* Table Page */
         .table-container {
             background: var(--card);
             border-radius: 30px;
@@ -223,7 +466,6 @@ t-weight: 300;
             transform: scale(1.02);
         }
 
-        /* Work Page Placeholder */
         .work-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -251,7 +493,6 @@ t-weight: 300;
             margin-bottom: 1rem;
         }
 
-        /* Back Button */
         .back-btn {
             position: fixed;
             bottom: 2rem;
@@ -276,7 +517,6 @@ t-weight: 300;
             box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .main-title { font-size: 4rem; }
             .nav-container { gap: 1rem; }
@@ -285,10 +525,8 @@ t-weight: 300;
             .members-box { padding: 2rem; }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
-    <!-- Background Animation -->
     <div class="bg-animation"></div>
     <div class="particles">
         <div class="particle"></div>
@@ -298,13 +536,12 @@ t-weight: 300;
         <div class="particle"></div>
     </div>
 
-    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <div class="nav-item" onclick="showPage('home')">
                 <i class="fas fa-home"></i> Menu
             </div>
-
+            
             <div class="nav-item" id="subjects-nav">
                 <i class="fas fa-chevron-down"></i> Subjects
                 <div class="dropdown" id="subjects-dropdown">
@@ -328,15 +565,15 @@ t-weight: 300;
                     </div>
                 </div>
             </div>
-
+            
             <div class="nav-item" onclick="showPage('work')">
                 <i class="fas fa-images"></i> Work
             </div>
-
+            
             <div class="nav-item" onclick="showPage('table')">
                 <i class="fas fa-table"></i> Table
             </div>
-
+            
             <div class="nav-item" onclick="showPage('schedule')">
                 <i class="fas fa-clock"></i> Schedule
             </div>
@@ -348,7 +585,7 @@ t-weight: 300;
         <div class="home-page">
             <h1 class="main-title">Integrated<br>Project</h1>
             <p class="subtitle">School Presentation 2026</p>
-
+            
             <div class="members-box">
                 <div class="members-content">
                     <div class="members-title">
@@ -366,7 +603,7 @@ t-weight: 300;
                     </div>
                 </div>
             </div>
-
+            
             <button class="start-btn" onclick="openSubjectsDropdown()">
                 <i class="fas fa-book-open"></i> Explore Subjects
             </button>
@@ -383,23 +620,8 @@ t-weight: 300;
             <div class="content-card">
                 <h2 style="color: var(--accent); margin-bottom: 1rem;">English Language Studies</h2>
                 <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
-                    Content for English subject will be displayed here. Add your English assignments, 
-                    literature analysis, grammar exercises, and creative writing pieces.
+                    Content for English subject will be displayed here.
                 </p>
-                <div class="work-grid">
-                    <div class="work-placeholder">
-                        <i class="fas fa-file-alt"></i>
-                        <p>English Essay</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-book-reader"></i>
-                        <p>Reading Assignment</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-pen"></i>
-                        <p>Creative Writing</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -414,23 +636,8 @@ t-weight: 300;
             <div class="content-card">
                 <h2 style="color: var(--accent); margin-bottom: 1rem;">Mathematical Concepts</h2>
                 <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
-                    Mathematical formulas, problem-solving strategies, geometry diagrams, 
-                    and algebraic equations will be presented in this section.
+                    Mathematical formulas and problem-solving strategies.
                 </p>
-                <div class="work-grid">
-                    <div class="work-placeholder">
-                        <i class="fas fa-square-root-alt"></i>
-                        <p>Algebra Problems</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-shapes"></i>
-                        <p>Geometry Project</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-chart-line"></i>
-                        <p>Statistics Analysis</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -445,23 +652,8 @@ t-weight: 300;
             <div class="content-card">
                 <h2 style="color: var(--accent); margin-bottom: 1rem;">اللغة العربية</h2>
                 <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
-                    Arabic language content including grammar (النحو والصرف), literature, 
-                    composition writing, and poetry analysis will be displayed here.
+                    Arabic language content including grammar and literature.
                 </p>
-                <div class="work-grid">
-                    <div class="work-placeholder">
-                        <i class="fas fa-feather-alt"></i>
-                        <p>Arabic Essay</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-scroll"></i>
-                        <p>Poetry Analysis</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-pen-fancy"></i>
-                        <p>Calligraphy</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -476,360 +668,24 @@ t-weight: 300;
             <div class="content-card">
                 <h2 style="color: var(--accent); margin-bottom: 1rem;">History & Geography</h2>
                 <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
-                    Historical events, geographical maps, civic education, and cultural studies 
-                    content will be organized in this section.
+                    Historical events and geographical studies.
                 </p>
-                <div class="work-grid">
-                    <div class="work-placeholder">
-                        <i class="fas fa-landmark"></i>
-                        <p>History Report</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <p>Geography Project</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-balance-scale"></i>
-                        <p>Civics Assignment</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- FRENCH PAGE -->
+    <!-- FRENCH PAGE WITH EMBEDDED IMAGE -->
     <div id="french" class="page">
         <div class="subject-page">
             <div class="page-header">
                 <div class="page-icon"><i class="fas fa-wine-glass"></i></div>
                 <h1 class="page-title">French</h1>
             </div>
-
+            
             <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">La Routine Quotidienne</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
-                    A visual story about Marie's daily routine in French. 
-                    Léa asks Marie about her daily activities and Marie describes her complete day.
+                <h2 style="color: var(--accent); margin-bottom: 1rem; text-align: center;">La Routine Quotidienne de Marie</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem; text-align: center;">
+                    A visual story about Marie's daily routine in French
                 </p>
-
-                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-12 at 7.05.35 PM.jpeg" 
-                     alt="French Daily Routine Comic" 
-                     class="image-showcase">
-
-                <div style="background: var(--darker); padding: 2rem; border-radius: 20px; margin-top: 2rem;">
-                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">Dialogue Translation</h3>
-                    <div style="color: var(--text-muted); line-height: 2; font-size: 1.1rem;">
-                        <p><strong style="color: var(--accent);">Léa:</strong> Bonjour Marie, Comment ça va? 
-                        <em>(Hello Marie, how are you?)</em></p>
-                        <p><strong style="color: var(--accent);">Marie:</strong> Ça va bien Merci, Et toi 
-                        <em>(I'm fine thanks, and you?)</em></p>
-                        <p><strong style="color: var(--accent);">Léa:</strong> Qu'est-ce que tu fais pendant ta routine quotidienne? 
-                        <em>(What do you do in your daily routine?)</em></p>
-                        <p style="margin-top: 1rem;">Marie describes waking up at 7h, brushing teeth, 
-                        breakfast at 8h30, taking medicine, lunch at 15h30 with rice and chicken, 
-                        doing homework, sports, dinner at 21h with fruits, watching TV, and sleeping at 23h.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- GERMAN PAGE -->
-    <div id="german" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-beer"></i></div>
-                <h1 class="page-title">German</h1>
-            </div>
-
-            <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">Mein Gesunder Alltag</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
-                    A healthy daily routine presented in German through illustrated comics. 
-                    Shows a complete day from morning to evening with various activities.
-                </p>
-
-                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-09 at 6.22.11 AM.jpeg" 
-                     alt="German Daily Routine Comic 1" 
-                     class="image-showcase">
-
-                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-09 at 6.22.11 AM(1).jpeg" 
-                     alt="German Daily Routine Comic 2" 
-                     class="image-showcase">
-
-                <div style="background: var(--darker); padding: 2rem; border-radius: 20px; margin-top: 2rem;">
-                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">Key Vocabulary</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; color: var(--text-muted);">
-                        <div><strong style="color: var(--accent);">Aufstehen</strong> - Wake up</div>
-                        <div><strong style="color: var(--accent);">Frühstück</strong> - Breakfast</div>
-                        <div><strong style="color: var(--accent);">Schule</strong> - School</div>
-                        <div><strong style="color: var(--accent);">Lernen</strong> - Learning</div>
-                        <div><strong style="color: var(--accent);">Mittagessen</strong> - Lunch</div>
-                        <div><strong style="color: var(--accent);">Sport</strong> - Sports</div>
-                        <div><strong style="color: var(--accent);">Bewegung</strong> - Exercise</div>
-                        <div><strong style="color: var(--accent);">Projekte</strong> - Projects</div>
-                        <div><strong style="color: var(--accent);">gesund</strong> - Healthy</div>
-                        <div><strong style="color: var(--accent);">Erholung</strong> - Relaxation</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WORK PAGE -->
-    <div id="work" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-images"></i></div>
-                <h1 class="page-title">Work Gallery</h1>
-            </div>
-            <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">Project Work Collection</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">
-                    This section will display all project images and assignments. 
-                    Placeholders are ready for your uploaded content.
-                </p>
-                <div class="work-grid">
-                    <div class="work-placeholder">
-                        <i class="fas fa-image"></i>
-                        <p>Image 1</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-image"></i>
-                        <p>Image 2</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-image"></i>
-                        <p>Image 3</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-image"></i>
-                        <p>Image 4</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-image"></i>
-                        <p>Image 5</p>
-                    </div>
-                    <div class="work-placeholder">
-                        <i class="fas fa-image"></i>
-                        <p>Image 6</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TABLE PAGE -->
-    <div id="table" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-table"></i></div>
-                <h1 class="page-title">Comparison Table</h1>
-            </div>
-
-            <div class="table-container">
-                <h2 style="text-align: center; margin-bottom: 1rem; color: var(--accent);">Flu vs COVID-19 Comparison</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
-                    Understanding the differences and similarities between influenza and coronavirus
-                </p>
-
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Flu</th>
-                            <th style="background: var(--gradient-1);">Both</th>
-                            <th style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">COVID-19</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Caused by influenza viruses</strong></td>
-                            <td><strong>Spread by close contact</strong></td>
-                            <td><strong>Caused by coronavirus SARS-CoV-2</strong></td>
-                        </tr>
-                        <tr>
-                            <td>Symptoms start <span style="color: var(--success);">1-4 days</span> after infection</td>
-                            <td>Similar symptoms like <span style="color: var(--accent);">fever, cough</span></td>
-                            <td>Symptoms start <span style="color: var(--danger);">2-14 days</span> after infection</td>
-                        </tr>
-                        <tr>
-                            <td><span style="color: var(--success);">Shorter</span> contagious period</td>
-                            <td>Can be <span style="color: var(--danger);">severe</span> for some people</td>
-                            <td><span style="color: var(--danger);">Longer</span> contagious period</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCHEDULE PAGE (SEPARATE) -->
-    <div id="schedule" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-clock"></i></div>
-                <h1 class="page-title">Daily Schedule</h1>
-            </div>
-
-            <div class="content-card">
-                <h2 style="text-align: center; color: var(--accent); margin-bottom: 1rem;">
-                    Gesunder Tagesablauf während der Pandemie
-                </h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem; font-size: 1.2rem;">
-                    Healthy Daily Schedule During the Pandemie
-                </p>
-
-                <div class="schedule-container">
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-sun"></i> 07:00 — Aufstehen & Frühstück
-                        </div>
-                        <div class="schedule-desc">Ich wache auf und frühstücke. Ich esse Obst oder Müsli.</div>
-                        <div class="schedule-trans">Wake up and have breakfast. Eat fruit or cereal.</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-laptop"></i> 08:00–12:00 — Schule / Lernen
-                        </div>
-                        <div class="schedule-desc">Ich mache Online-Unterricht oder Hausaufgaben.</div>
-                        <div class="schedule-trans">Online classes or homework</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-utensils"></i> 12:00–13:00 — Mittagessen
-                        </div>
-                        <div class="schedule-desc">Ich esse gesundes Essen. Danach mache ich eine Pause.</div>
-                        <div class="schedule-trans">Eat healthy food, then take a break</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-running"></i> 13:00–15:00 — Sport / Bewegung
-                        </div>
-                        <div class="schedule-desc">Ich gehe spazieren, jogge oder mache Übungen.</div>
-                        <div class="schedule-trans">Go walking, jogging, or do exercises</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-book"></i> 15:00–17:00 — Lernen / Projekte
-                        </div>
-                        <div class="schedule-desc">Ich übe Fächer oder arbeite an Projekten.</div>
-                        <div class="schedule-trans">Practice subjects or work on projects</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-gamepad"></i> 17:00–18:00 — Freizeit
-                        </div>
-                        <div class="schedule-desc">Ich lese, höre Musik oder spiele.</div>
-                        <div class="schedule-trans">Read, listen to music, or play</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-utensils"></i> 18:00–19:00 — Abendessen
-                        </div>
-                        <div class="schedule-desc">Ich esse mit meiner Familie und wir reden über den Tag.</div>
-                        <div class="schedule-trans">Dinner with family, discuss the day</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-spa"></i> 19:00–20:00 — Entspannung
-                        </div>
-                        <div class="schedule-desc">Ich meditiere oder schreibe Tagebuch.</div>
-                        <div class="schedule-trans">Meditation or journaling</div>
-                    </div>
-
-                    <div class="scheduleschedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-tasks"></i> 20:00–21:00 — Vorbereitung für morgen
-                        </div>
-                        <div class="schedule-desc">Ich organisiere meine Sachen und lese ein wenig.</div>
-                        <div class="schedule-trans">Prepare for tomorrow, read a bit</div>
-                    </div>
-
-                    <div class="schedule-item">
-                        <div class="schedule-time">
-                            <i class="fas fa-moon"></i> 21:30 — Schlafenszeit
-                        </div>
-                        <div class="schedule-desc">Ich gehe schlafen, um gesund zu bleiben.</div>
-                        <div class="schedule-trans">Go to sleep to stay healthy</div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 3rem; text-align: center; background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%); padding: 2rem; border-radius: 20px;">
-                    <h3 style="color: var(--text); margin-bottom: 1rem;">Beginne deinen Tag mit Energie!</h3>
-                    <p style="color: var(--text-muted);">Start your day with energy! A healthy routine maintains wellbeing.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Back to Home Button -->
-    <button class="back-btn" onclick="showPage('home')">
-        <i class="fas fa-home"></i> Back to Menu
-    </button>
-
-    <script>
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-
-            // Show selected page
-            document.getElementById(pageId).classList.add('active');
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Close dropdown if open
-            document.getElementById('subjects-dropdown').classList.remove('show');
-        }
-
-        function openSubjectsDropdown() {
-            const dropdown = document.getElementById('subjects-dropdown');
-            dropdown.classList.toggle('show');
-
-            // Auto-close after 3 seconds if not hovered
-            setTimeout(() => {
-                if (!document.getElementById('subjects-nav').matches(':hover') && 
-                    !dropdown.matches(':hover')) {
-                    dropdown.classList.remove('show');
-                }
-            }, 3000);
-        }
-
-        // Dropdown hover functionality
-        const subjectsNav = document.getElementById('subjects-nav');
-        const dropdown = document.getElementById('subjects-dropdown');
-
-        subjectsNav.addEventListener('mouseenter', () => {
-            dropdown.classList.add('show');
-        });
-
-        subjectsNav.addEventListener('mouseleave', () => {
-            setTimeout(() => {
-                if (!subjectsNav.matches(':hover') && !dropdown.matches(':hover')) {
-                    dropdown.classList.remove('show');
-                }
-            }, 100);
-        });
-
-        dropdown.addEventListener('mouseleave', () => {
-            dropdown.classList.remove('show');
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!subjectsNav.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-    </script>
-</body>
-</html>
+                
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAY1BjgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD2Wiiivnj7UKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACii
