@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrated Project - School Presentation</title>
+    <title>Integrated Project</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -23,8 +23,6 @@
             --card-hover: #252542;
             --text: #f8fafc;
             --text-muted: #94a3b8;
-            --success: #10b981;
-            --danger: #ef4444;
             --gradient-1: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
             --gradient-2: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
         }
@@ -37,6 +35,7 @@
             overflow-x: hidden;
         }
 
+        /* Animated Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -53,7 +52,8 @@
             width: 200%;
             height: 200%;
             background: radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 40%);
             animation: bgMove 20s ease-in-out infinite;
         }
 
@@ -62,242 +62,342 @@
             50% { transform: translate(-5%, -5%) rotate(5deg); }
         }
 
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 70%; animation-delay: 6s; }
+        .particle:nth-child(5) { left: 90%; animation-delay: 8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
         /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1rem 5%;
-            background: rgba(15, 15, 26, 0.95);
+            padding: 1.5rem 5%;
+            background: rgba(15, 15, 26, 0.98);
             backdrop-filter: blur(20px);
             z-index: 1000;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
+        .nav-container {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
+            gap: 3rem;
             align-items: center;
         }
 
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
+        .nav-item {
             position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-1);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero */
-        .hero {
-            min-height: 100vh;
+            cursor: pointer;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1.1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 8rem 5% 4rem;
-        }
-
-        .hero-content {
-            max-width: 900px;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero .members {
-            font-size: 1.3rem;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-
-        .hero .members strong {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .btn {
-            padding: 0.7rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
             gap: 0.5rem;
-            font-size: 0.95rem;
         }
 
-        .btn-primary {
-            background: var(--gradient-1);
-            color: white;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        .nav-item:hover {
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--accent);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(124, 58, 237, 0.6);
+        .nav-item i {
+            font-size: 0.9rem;
+            transition: transform 0.3s;
         }
 
-        /* Sections */
-        section {
-            padding: 5rem 5%;
+        .nav-item.active i {
+            transform: rotate(180deg);
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
-        }
-
-        /* Subject Cards */
-        .subjects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .subject-card {
+        /* Dropdown Menu */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
             background: var(--card);
             border-radius: 20px;
-            overflow: hidden;
+            padding: 1rem;
+            min-width: 250px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
             transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .nav-item:hover .dropdown,
+        .dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             cursor: pointer;
-            text-decoration: none;
-            color: var(--text);
-            display: block;
-        }
-
-        .subject-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 25px 50px rgba(124, 58, 237, 0.4);
-        }
-
-        .subject-header {
-            padding: 2rem;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 0.5rem;
         }
 
-        .subject-icon {
-            width: 60px;
-            height: 60px;
+        .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-item:hover {
             background: var(--gradient-1);
-            border-radius: 15px;
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 0.9rem;
         }
 
-        .subject-title {
+        /* Pages */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .home-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .main-title {
+            font-size: 8rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.5)); }
+            50% { filter: drop-shadow(0 0 60px rgba(236, 72, 153, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .members-box {
+            background: var(--card);
+            border-radius: 30px;
+            padding: 3rem 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .members-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--gradient-1);
+            opacity: 0.1;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .members-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .members-title {
             font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
             font-weight: 700;
         }
 
-        .subject-content {
-            padding: 1.5rem;
+        .members-list {
+            font-size: 1.3rem;
+            color: var(--text);
+            line-height: 2;
         }
 
-        .subject-content p {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .btn-view {
-            width: 100%;
-            background: var(--gradient-1);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 1rem;
+        .members-list span {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(124, 58, 237, 0.3);
+            border-radius: 20px;
+            margin: 0.3rem;
             transition: all 0.3s;
         }
 
-        .btn-view:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.5);
-        }
-
-        /* Content Sections */
-        .content-section {
-            background: var(--card);
-            border-radius: 30px;
-            padding: 3rem;
-            margin-bottom: 4rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .content-section h2 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
+        .members-list span:hover {
             background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            transform: scale(1.1);
+        }
+
+        .start-btn {
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        /* Comparison Table */
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.6);
+        }
+
+        /* Subject Pages */
+        .subject-page {
+            padding: 120px 5% 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .page-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .content-card {
+            background: var(--card);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            transition: all 0.3s;
+        }
+
+        .content-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px rgba(124, 58, 237, 0.3);
+        }
+
+        .image-showcase {
+            width: 100%;
+            border-radius: 20px;
+            margin: 2rem 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .image-showcase:hover {
+            transform: scale(1.02);
+        }
+
+        /* Table Page */
+        .table-container {
+            background: var(--card);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
@@ -306,422 +406,553 @@
 
         .comparison-table th,
         .comparison-table td {
-            padding: 1.5rem;
+            padding: 2rem;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.1rem;
         }
 
         .comparison-table th {
             background: var(--gradient-1);
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .comparison-table td {
             background: var(--darker);
+            transition: all 0.3s;
         }
 
         .comparison-table tr:hover td {
             background: var(--card-hover);
+            transform: scale(1.02);
         }
 
-        /* Schedule */
-        .schedule-list {
-            list-style: none;
-            margin-top: 2rem;
+        /* Work Page Placeholder */
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
-        .schedule-item {
-            background: var(--darker);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary);
+        .work-placeholder {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
             transition: all 0.3s;
         }
 
-        .schedule-item:hover {
-            transform: translateX(10px);
-            border-left-color: var(--secondary);
+        .work-placeholder:hover {
+            border-color: var(--primary);
+            background: var(--card-hover);
         }
 
-        .schedule-time {
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .schedule-desc {
+        .work-placeholder i {
+            font-size: 3rem;
             color: var(--text-muted);
-        }
-
-        /* Comic Display */
-        .comic-display {
-            background: var(--darker);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .comic-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .comic-caption {
-            color: var(--text-muted);
-            margin-top: 1.5rem;
-            font-style: italic;
-            font-size: 1.1rem;
-        }
-
-        /* Two Column Layout */
-        .two-column {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 3rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--card);
-            padding: 3rem 5%;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        footer h3 {
-            font-size: 1.5rem;
             margin-bottom: 1rem;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        footer p {
-            color: var(--text-muted);
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.6);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
-            .subjects-container { grid-template-columns: 1fr; }
-            .two-column { grid-template-columns: 1fr; }
-            .comparison-table { font-size: 0.9rem; }
-            .comparison-table th,
-            .comparison-table td { padding: 1rem; }
+            .main-title { font-size: 4rem; }
+            .nav-container { gap: 1rem; }
+            .nav-item { padding: 0.5rem 1rem; font-size: 0.9rem; }
+            .page-title { font-size: 2.5rem; }
+            .members-box { padding: 2rem; }
         }
     </style>
 <base target="_blank">
 </head>
 <body>
+    <!-- Background Animation -->
     <div class="bg-animation"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
     <!-- Navigation -->
     <nav>
-        <a href="#" class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            Integrated Project
-        </a>
-        <div class="nav-links">
-            <a href="#subjects">Subjects</a>
-            <a href="#german">German</a>
-            <a href="#french">French</a>
-            <a href="#comparison">Health</a>
-            <a href="#schedule">Schedule</a>
+        <div class="nav-container">
+            <div class="nav-item" onclick="showPage('home')">
+                <i class="fas fa-home"></i> Menu
+            </div>
+
+            <div class="nav-item" id="subjects-nav">
+                <i class="fas fa-chevron-down"></i> Subjects
+                <div class="dropdown" id="subjects-dropdown">
+                    <div class="dropdown-item" onclick="showPage('english')">
+                        <i class="fas fa-language"></i> English
+                    </div>
+                    <div class="dropdown-item" onclick="showPage('math')">
+                        <i class="fas fa-calculator"></i> Math
+                    </div>
+                    <div class="dropdown-item" onclick="showPage('arabic')">
+                        <i class="fas fa-book"></i> Arabic
+                    </div>
+                    <div class="dropdown-item" onclick="showPage('social')">
+                        <i class="fas fa-globe"></i> Social
+                    </div>
+                    <div class="dropdown-item" onclick="showPage('french')">
+                        <i class="fas fa-wine-glass"></i> French
+                    </div>
+                    <div class="dropdown-item" onclick="showPage('german')">
+                        <i class="fas fa-beer"></i> German
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item" onclick="showPage('work')">
+                <i class="fas fa-images"></i> Work
+            </div>
+
+            <div class="nav-item" onclick="showPage('table')">
+                <i class="fas fa-table"></i> Table
+            </div>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Integrated Project</h1>
-            <div class="members">
-                <strong>Group Members:</strong><br>
-                Selim, Hamza K, Malak, Rokaya, Youssef, Mahmoud, Renad, Farida
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <div class="home-page">
+            <h1 class="main-title">Integrated<br>Project</h1>
+            <p class="subtitle">School Presentation 2026</p>
+
+            <div class="members-box">
+                <div class="members-content">
+                    <div class="members-title">
+                        <i class="fas fa-users"></i> Group Members
+                    </div>
+                    <div class="members-list">
+                        <span>Selim</span>
+                        <span>Hamza K</span>
+                        <span>Malak</span>
+                        <span>Rokaya</span>
+                        <span>Youssef</span>
+                        <span>Mahmoud</span>
+                        <span>Renad</span>
+                        <span>Farida</span>
+                    </div>
+                </div>
             </div>
-            <a href="#subjects" class="btn btn-primary">
+
+            <button class="start-btn" onclick="toggleSubjects()">
                 <i class="fas fa-book-open"></i> Explore Subjects
-            </a>
+            </button>
         </div>
-    </section>
+    </div>
 
-    <!-- Subjects Navigation Cards -->
-    <section id="subjects">
-        <h2 class="section-title">Academic Subjects</h2>
-        <p class="section-subtitle">Click to view our subject content</p>
-        <div class="subjects-container">
-            <a href="#german" class="subject-card">
-                <div class="subject-header">
-                    <div class="subject-icon"><i class="fas fa-beer"></i></div>
-                    <div class="subject-title">German</div>
-                </div>
-                <div class="subject-content">
-                    <p>Mein gesunder Alltag - Daily routines and healthy lifestyle in German</p>
-                    <button class="btn-view">View German Content</button>
-                </div>
-            </a>
-
-            <a href="#french" class="subject-card">
-                <div class="subject-header">
-                    <div class="subject-icon"><i class="fas fa-wine-glass"></i></div>
-                    <div class="subject-title">French</div>
-                </div>
-                <div class="subject-content">
-                    <p>La routine quotidienne - Daily routines and conversations in French</p>
-                    <button class="btn-view">View French Content</button>
-                </div>
-            </a>
-
-            <a href="#comparison" class="subject-card">
-                <div class="subject-header">
-                    <div class="subject-icon"><i class="fas fa-heartbeat"></i></div>
-                    <div class="subject-title">Health / Science</div>
-                </div>
-                <div class="subject-content">
-                    <p>Flu vs COVID-19 comparison and healthy daily schedule</p>
-                    <button class="btn-view">View Health Content</button>
-                </div>
-            </a>
-
-            <a href="#schedule" class="subject-card">
-                <div class="subject-header">
-                    <div class="subject-icon"><i class="fas fa-clock"></i></div>
-                    <div class="subject-title">Daily Schedule</div>
-                </div>
-                <div class="subject-content">
-                    <p>Gesunder Tagesablauf während der Pandemie - Healthy routine schedule</p>
-                    <button class="btn-view">View Schedule</button>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <!-- German Section -->
-    <section id="german">
-        <div class="content-section">
-            <h2><i class="fas fa-beer"></i> German - Mein Gesunder Alltag</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">
-                A visual story about healthy daily routines in German language
-            </p>
-
-            <div class="comic-display">
-                <!-- German Comic Image 1 -->
-                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-09 at 6.22.11 AM.jpeg" 
-                     alt="German Daily Routine Comic - Page 1" 
-                     class="comic-image">
-                <p class="comic-caption">
-                    <strong>Mein gesunder Alltag:</strong> 07:00 Aufstehen & Frühstück | 08:00-12:00 Schule/Lernen | 
-                    12:00-13:00 Mittagessen | 13:00-15:00 Sport/Bewegung | 15:00-17:00 Lernen/Projekte
+    <!-- ENGLISH PAGE -->
+    <div id="english" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-language"></i></div>
+                <h1 class="page-title">English</h1>
+            </div>
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">English Language Studies</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
+                    Content for English subject will be displayed here. Add your English assignments, 
+                    literature analysis, grammar exercises, and creative writing pieces.
                 </p>
-            </div>
-
-            <div class="comic-display" style="margin-top: 2rem;">
-                <!-- German Comic Image 2 -->
-                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-09 at 6.22.11 AM(1).jpeg" 
-                     alt="German Daily Routine Comic - Page 2" 
-                     class="comic-image">
-                <p class="comic-caption">
-                    Continue your healthy day: Gesunde Ernährung und Erholung | Bleib aktiv für deinen Körper | 
-                    Kreativität und Weiterbildung
-                </p>
-            </div>
-
-            <div style="margin-top: 2rem; background: var(--darker); padding: 2rem; border-radius: 15px;">
-                <h3 style="color: var(--accent); margin-bottom: 1rem;">German Vocabulary from the Comic:</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; color: var(--text-muted);">
-                    <div>• <strong>Aufstehen</strong> - Wake up</div>
-                    <div>• <strong>Frühstück</strong> - Breakfast</div>
-                    <div>• <strong>Schule</strong> - School</div>
-                    <div>• <strong>Lernen</strong> - Learning</div>
-                    <div>• <strong>Mittagessen</strong> - Lunch</div>
-                    <div>• <strong>Sport</strong> - Sports</div>
-                    <div>• <strong>Bewegung</strong> - Exercise</div>
-                    <div>• <strong>Projekte</strong> - Projects</div>
-                    <div>• <strong>gesund</strong> - Healthy</div>
-                    <div>• <strong>Erholung</strong> - Relaxation</div>
+                <div class="work-grid">
+                    <div class="work-placeholder">
+                        <i class="fas fa-file-alt"></i>
+                        <p>English Essay</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-book-reader"></i>
+                        <p>Reading Assignment</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-pen"></i>
+                        <p>Creative Writing</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- French Section -->
-    <section id="french">
-        <div class="content-section">
-            <h2><i class="fas fa-wine-glass"></i> French - La Routine Quotidienne de Marie</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">
-                A conversation between Léa and Marie about daily routines in French
-            </p>
+    <!-- MATH PAGE -->
+    <div id="math" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-calculator"></i></div>
+                <h1 class="page-title">Mathematics</h1>
+            </div>
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">Mathematical Concepts</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
+                    Mathematical formulas, problem-solving strategies, geometry diagrams, 
+                    and algebraic equations will be presented in this section.
+                </p>
+                <div class="work-grid">
+                    <div class="work-placeholder">
+                        <i class="fas fa-square-root-alt"></i>
+                        <p>Algebra Problems</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-shapes"></i>
+                        <p>Geometry Project</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Statistics Analysis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <div class="comic-display">
-                <!-- French Comic Image -->
+    <!-- ARABIC PAGE -->
+    <div id="arabic" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-book"></i></div>
+                <h1 class="page-title">Arabic</h1>
+            </div>
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">اللغة العربية</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
+                    Arabic language content including grammar (النحو والصرف), literature, 
+                    composition writing, and poetry analysis will be displayed here.
+                </p>
+                <div class="work-grid">
+                    <div class="work-placeholder">
+                        <i class="fas fa-feather-alt"></i>
+                        <p>Arabic Essay</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-scroll"></i>
+                        <p>Poetry Analysis</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-pen-fancy"></i>
+                        <p>Calligraphy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOCIAL PAGE -->
+    <div id="social" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-globe"></i></div>
+                <h1 class="page-title">Social Studies</h1>
+            </div>
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">History & Geography</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8;">
+                    Historical events, geographical maps, civic education, and cultural studies 
+                    content will be organized in this section.
+                </p>
+                <div class="work-grid">
+                    <div class="work-placeholder">
+                        <i class="fas fa-landmark"></i>
+                        <p>History Report</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Geography Project</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-balance-scale"></i>
+                        <p>Civics Assignment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FRENCH PAGE -->
+    <div id="french" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-wine-glass"></i></div>
+                <h1 class="page-title">French</h1>
+            </div>
+
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">La Routine Quotidienne</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                    A visual story about Marie's daily routine in French. 
+                    Léa asks Marie about her daily activities and Marie describes her complete day.
+                </p>
+
                 <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-12 at 7.05.35 PM.jpeg" 
-                     alt="French Daily Routine Comic - Marie's Day" 
-                     class="comic-image">
-                <p class="comic-caption">
-                    <strong>La routine quotidienne de Marie:</strong> From waking up at 7h to going to bed at 23h - 
-                    A complete day including meals, school, sports, and relaxation
-                </p>
-            </div>
+                     alt="French Daily Routine Comic" 
+                     class="image-showcase">
 
-            <div style="margin-top: 2rem; background: var(--darker); padding: 2rem; border-radius: 15px;">
-                <h3 style="color: var(--secondary); margin-bottom: 1rem;">French Dialogue Translation:</h3>
-                <div style="color: var(--text-muted); line-height: 2;">
-                    <p><strong>Léa:</strong> Bonjour Marie, Comment ça va? (Hello Marie, how are you?)</p>
-                    <p><strong>Marie:</strong> Ça va bien Merci, Et toi (I'm fine thanks, and you?)</p>
-                    <p><strong>Léa:</strong> Qu'est-ce que tu fais pendant ta routine quotidienne? (What do you do in your daily routine?)</p>
-                    <p><strong>Marie:</strong> Le matin, je me réveille à 7 heures... (In the morning, I wake up at 7 o'clock...)</p>
-                    <p style="margin-top: 1rem; font-style: italic;">
-                        Marie describes her full day: brushing teeth, breakfast at 8h30, taking medicine, 
-                        lunch at 15h30, homework, sports, dinner at 21h with fruits, watching TV, and sleeping at 23h.
-                    </p>
+                <div style="background: var(--darker); padding: 2rem; border-radius: 20px; margin-top: 2rem;">
+                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">Dialogue Translation</h3>
+                    <div style="color: var(--text-muted); line-height: 2; font-size: 1.1rem;">
+                        <p><strong style="color: var(--accent);">Léa:</strong> Bonjour Marie, Comment ça va? 
+                        <em>(Hello Marie, how are you?)</em></p>
+                        <p><strong style="color: var(--accent);">Marie:</strong> Ça va bien Merci, Et toi 
+                        <em>(I'm fine thanks, and you?)</em></p>
+                        <p><strong style="color: var(--accent);">Léa:</strong> Qu'est-ce que tu fais pendant ta routine quotidienne? 
+                        <em>(What do you do in your daily routine?)</em></p>
+                        <p style="margin-top: 1rem;">Marie describes waking up at 7h, brushing teeth, 
+                        breakfast at 8h30, taking medicine, lunch at 15h30 with rice and chicken, 
+                        doing homework, sports, dinner at 21h with fruits, watching TV, and sleeping at 23h.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Health Comparison Section -->
-    <section id="comparison">
-        <div class="content-section">
-            <h2><i class="fas fa-heartbeat"></i> Health Comparison: Flu vs COVID-19</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">
-                Understanding the differences and similarities between influenza and coronavirus
-            </p>
-
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Flu</th>
-                        <th style="background: var(--gradient-1);">Both</th>
-                        <th style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">COVID-19</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Caused by influenza viruses</strong></td>
-                        <td><strong>Spread by close contact</strong></td>
-                        <td><strong>Caused by coronavirus SARS-CoV-2</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Symptoms start <span style="color: var(--success);">1-4 days</span> after infection</td>
-                        <td>Similar symptoms like <span style="color: var(--accent);">fever, cough</span></td>
-                        <td>Symptoms start <span style="color: var(--danger);">2-14 days</span> after infection</td>
-                    </tr>
-                    <tr>
-                        <td><span style="color: var(--success);">Shorter</span> contagious period</td>
-                        <td>Can be <span style="color: var(--danger);">severe</span> for some people</td>
-                        <td><span style="color: var(--danger);">Longer</span> contagious period</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div style="margin-top: 2rem; background: var(--darker); padding: 2rem; border-radius: 15px;">
-                <h3 style="color: var(--accent); margin-bottom: 1rem;">Key Takeaways:</h3>
-                <ul style="color: var(--text-muted); padding-left: 1.5rem; line-height: 2;">
-                    <li>Both viruses spread through close contact with infected individuals</li>
-                    <li>COVID-19 has a longer incubation period (up to 14 days) compared to flu (1-4 days)</li>
-                    <li>Both can cause severe illness, especially in vulnerable populations</li>
-                    <li>Prevention measures like hand washing and masks help against both</li>
-                </ul>
+    <!-- GERMAN PAGE -->
+    <div id="german" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-beer"></i></div>
+                <h1 class="page-title">German</h1>
             </div>
-        </div>
-    </section>
 
-    <!-- Daily Schedule Section -->
-    <section id="schedule">
-        <div class="content-section">
-            <h2><i class="fas fa-clock"></i> Gesunder Tagesablauf während der Pandemie</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">
-                Healthy Daily Schedule During the Pandemic - A structured day for physical and mental wellbeing
-            </p>
-
-            <ul class="schedule-list">
-                <li class="schedule-item">
-                    <div class="schedule-time">07:00 — Aufstehen & Frühstück</div>
-                    <div class="schedule-desc">Ich wache auf und frühstücke. Ich esse Obst oder Müsli.<br>
-                    <em>(Wake up and have breakfast. Eat fruit or cereal.)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">08:00–12:00 — Schule / Lernen</div>
-                    <div class="schedule-desc">Ich mache Online-Unterricht oder Hausaufgaben.<br>
-                    <em>(Online classes or homework)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">12:00–13:00 — Mittagessen</div>
-                    <div class="schedule-desc">Ich esse gesundes Essen. Danach mache ich eine Pause.<br>
-                    <em>(Eat healthy food, then take a break)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">13:00–15:00 — Sport / Bewegung</div>
-                    <div class="schedule-desc">Ich gehe spazieren, jogge oder mache Übungen.<br>
-                    <em>(Go walking, jogging, or do exercises)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">15:00–17:00 — Lernen / Projekte</div>
-                    <div class="schedule-desc">Ich übe Fächer oder arbeite an Projekten.<br>
-                    <em>(Practice subjects or work on projects)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">17:00–18:00 — Freizeit</div>
-                    <div class="schedule-desc">Ich lese, höre Musik oder spiele.<br>
-                    <em>(Read, listen to music, or play)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">18:00–19:00 — Abendessen</div>
-                    <div class="schedule-desc">Ich esse mit meiner Familie und wir reden über den Tag.<br>
-                    <em>(Dinner with family, discuss the day)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">19:00–20:00 — Entspannung</div>
-                    <div class="schedule-desc">Ich meditiere oder schreibe Tagebuch.<br>
-                    <em>(Meditation or journaling)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">20:00–21:00 — Vorbereitung für morgen</div>
-                    <div class="schedule-desc">Ich organisiere meine Sachen und lese ein wenig.<br>
-                    <em>(Prepare for tomorrow, read a bit)</em></div>
-                </li>
-                <li class="schedule-item">
-                    <div class="schedule-time">21:30 — Schlafenszeit</div>
-                    <div class="schedule-desc">Ich gehe schlafen, um gesund zu bleiben.<br>
-                    <em>(Go to sleep to stay healthy)</em></div>
-                </li>
-            </ul>
-
-            <div style="margin-top: 2rem; background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%); padding: 2rem; border-radius: 15px; text-align: center;">
-                <h3 style="color: var(--text); margin-bottom: 1rem;">Beginne deinen Tag mit Energie!</h3>
-                <p style="color: var(--text-muted);">
-                    A healthy routine helps maintain physical and mental wellbeing during challenging times.
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">Mein Gesunder Alltag</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                    A healthy daily routine presented in German through illustrated comics. 
+                    Shows a complete day from morning to evening with various activities.
                 </p>
+
+                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-09 at 6.22.11 AM.jpeg" 
+                     alt="German Daily Routine Comic 1" 
+                     class="image-showcase">
+
+                <img src="/mnt/kimi/upload/WhatsApp Image 2026-04-09 at 6.22.11 AM(1).jpeg" 
+                     alt="German Daily Routine Comic 2" 
+                     class="image-showcase">
+
+                <div style="background: var(--darker); padding: 2rem; border-radius: 20px; margin-top: 2rem;">
+                    <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">Key Vocabulary</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; color: var(--text-muted);">
+                        <div><strong style="color: var(--accent);">Aufstehen</strong> - Wake up</div>
+                        <div><strong style="color: var(--accent);">Frühstück</strong> - Breakfast</div>
+                        <div><strong style="color: var(--accent);">Schule</strong> - School</div>
+                        <div><strong style="color: var(--accent);">Lernen</strong> - Learning</div>
+                        <div><strong style="color: var(--accent);">Mittagessen</strong> - Lunch</div>
+                        <div><strong style="color: var(--accent);">Sport</strong> - Sports</div>
+                        <div><strong style="color: var(--accent);">Bewegung</strong> - Exercise</div>
+                        <div><strong style="color: var(--accent);">Projekte</strong> - Projects</div>
+                        <div><strong style="color: var(--accent);">gesund</strong> - Healthy</div>
+                        <div><strong style="color: var(--accent);">Erholung</strong> - Relaxation</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <h3>Integrated Project</h3>
-        <p>Presented by: Selim, Hamza K, Malak, Rokaya, Youssef, Mahmoud, Renad, Farida</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;">School Project 2026 - German & French Language Studies</p>
-    </footer>
+    <!-- WORK PAGE -->
+    <div id="work" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-images"></i></div>
+                <h1 class="page-title">Work Gallery</h1>
+            </div>
+            <div class="content-card">
+                <h2 style="color: var(--accent); margin-bottom: 1rem;">Project Work Collection</h2>
+                <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">
+                    This section will display all project images and assignments. 
+                    Placeholders are ready for your uploaded content.
+                </p>
+                <div class="work-grid">
+                    <div class="work-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Image 1</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Image 2</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Image 3</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Image 4</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Image 5</p>
+                    </div>
+                    <div class="work-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Image 6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLE PAGE -->
+    <div id="table" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-table"></i></div>
+                <h1 class="page-title">Comparison Table</h1>
+            </div>
+
+            <div class="table-container">
+                <h2 style="text-align: center; margin-bottom: 1rem; color: var(--accent);">Flu vs COVID-19 Comparison</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+                    Understanding the differences and similarities between influenza and coronavirus
+                </p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Flu</th>
+                            <th style="background: var(--gradient-1);">Both</th>
+                            <th style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">COVID-19</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Caused by influenza viruses</strong></td>
+                            <td><strong>Spread by close contact</strong></td>
+                            <td><strong>Caused by coronavirus SARS-CoV-2</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Symptoms start <span style="color: var(--success);">1-4 days</span> after infection</td>
+                            <td>Similar symptoms like <span style="color: var(--accent);">fever, cough</span></td>
+                            <td>Symptoms start <span style="color: var(--danger);">2-14 days</span> after infection</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color: var(--success);">Shorter</span> contagious period</td>
+                            <td>Can be <span style="color: var(--danger);">severe</span> for some people</td>
+                            <td><span style="color: var(--danger);">Longer</span> contagious period</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 3rem; background: var(--darker); padding: 2rem; border-radius: 20px;">
+                    <h3 style="color: var(--accent); margin-bottom: 1.5rem; text-align: center;">Gesunder Tagesablauf während der Pandemie</h3>
+                    <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">Healthy Daily Schedule During the Pandemic</p>
+
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">07:00</strong> - Aufstehen & Frühstück (Wake up & Breakfast)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">08:00-12:00</strong> - Schule / Lernen (School / Learning)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">12:00-13:00</strong> - Mittagessen (Lunch)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">13:00-15:00</strong> - Sport / Bewegung (Sports / Exercise)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">15:00-17:00</strong> - Lernen / Projekte (Learning / Projects)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">17:00-18:00</strong> - Freizeit (Free time)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">18:00-19:00</strong> - Abendessen (Dinner)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">19:00-20:00</strong> - Entspannung (Relaxation)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">20:00-21:00</strong> - Vorbereitung (Preparation)
+                        </div>
+                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
+                            <strong style="color: var(--accent);">21:30</strong> - Schlafenszeit (Bedtime)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Home Button -->
+    <button class="back-btn" onclick="showPage('home')">
+        <i class="fas fa-home"></i> Back to Menu
+    </button>
 
     <script>
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
             });
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Close dropdown if open
+            document.getElementById('subjects-dropdown').classList.remove('show');
+        }
+
+        function toggleSubjects() {
+            document.getElementById('subjects-dropdown').classList.toggle('show');
+        }
+
+        // Dropdown hover functionality
+        const subjectsNav = document.getElementById('subjects-nav');
+        const dropdown = document.getElementById('subjects-dropdown');
+
+        subjectsNav.addEventListener('mouseenter', () => {
+            dropdown.classList.add('show');
+        });
+
+        subjectsNav.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                if (!subjectsNav.matches(':hover') && !dropdown.matches(':hover')) {
+                    dropdown.classList.remove('show');
+                }
+            }, 100);
+        });
+
+        dropdown.addEventListener('mouseleave', () => {
+            dropdown.classList.remove('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!subjectsNav.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
         });
     </script>
 </body>
