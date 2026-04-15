@@ -1,258 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrated Project</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
-            --secondary: #ec4899;
-            --accent: #f59e0b;
-            --dark: #0f0f1a;
-            --darker: #0a0a12;
-            --card: #1a1a2e;
-            --card-hover: #252542;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --gradient-1: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
-            --gradient-2: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--darker);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: var(--darker);
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 40%);
-            animation: bgMove 20s ease-in-out infinite;
-        }
-
-        @keyframes bgMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(-5%, -5%) rotate(5deg); }
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite;
-        }
-
-        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
-        .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
-        .particle:nth-child(4) { left: 70%; animation-delay: 6s; }
-        .particle:nth-child(5) { left: 90%; animation-delay: 8s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
-            background: rgba(15, 15, 26, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-container {
-            display: flex;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .nav-item {
-            position: relative;
-            cursor: pointer;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-item:hover {
-            background: rgba(124, 58, 237, 0.2);
-            color: var(--accent);
-        }
-
-        .nav-item i {
-            font-size: 0.9rem;
-            transition: transform 0.3s;
-        }
-
-        .nav-item.active i {
-            transform: rotate(180deg);
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card);
-            border-radius: 20px;
-            padding: 1rem;
-            min-width: 250px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(-50%) translateY(-10px);
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
-
-        .nav-item:hover .dropdown,
-        .dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .dropdown-item {
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .dropdown-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .dropdown-item:hover {
-            background: var(--gradient-1);
-            transform: translateX(5px);
-        }
-
-        .dropdown-item i {
-            width: 30px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-        }
-
-        /* Pages */
-        .page {
-            display: none;
-            min-height: 100vh;
-            padding-top: 100px;
-        }
-
-        .page.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Home Page */
-        .home-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .main-title {
-            font-size: 8rem;
-            font-weight: 900;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            line-height: 1;
-            text-transform: uppercase;
-            letter-spacing: -3px;
-            animation: glow 3s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.5)); }
-            50% { filter: drop-shadow(0 0 60px rgba(236, 72, 153, 0.8)); }
-        }
-
-        .subtitle {
-            font-size: 2rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            font-weight: 300;
+t-weight: 300;
         }
 
         .members-box {
@@ -388,6 +134,55 @@
 
         .image-showcase:hover {
             transform: scale(1.02);
+        }
+
+        /* Schedule Page Specific */
+        .schedule-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .schedule-item {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-item:hover {
+            transform: translateX(15px);
+            border-left-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .schedule-time {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .schedule-time i {
+            font-size: 1.2rem;
+        }
+
+        .schedule-desc {
+            color: var(--text);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-trans {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 1rem;
         }
 
         /* Table Page */
@@ -541,6 +336,10 @@
             <div class="nav-item" onclick="showPage('table')">
                 <i class="fas fa-table"></i> Table
             </div>
+
+            <div class="nav-item" onclick="showPage('schedule')">
+                <i class="fas fa-clock"></i> Schedule
+            </div>
         </div>
     </nav>
 
@@ -568,7 +367,7 @@
                 </div>
             </div>
 
-            <button class="start-btn" onclick="toggleSubjects()">
+            <button class="start-btn" onclick="openSubjectsDropdown()">
                 <i class="fas fa-book-open"></i> Explore Subjects
             </button>
         </div>
@@ -860,43 +659,111 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
 
-                <div style="margin-top: 3rem; background: var(--darker); padding: 2rem; border-radius: 20px;">
-                    <h3 style="color: var(--accent); margin-bottom: 1.5rem; text-align: center;">Gesunder Tagesablauf während der Pandemie</h3>
-                    <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">Healthy Daily Schedule During the Pandemic</p>
+    <!-- SCHEDULE PAGE (SEPARATE) -->
+    <div id="schedule" class="page">
+        <div class="subject-page">
+            <div class="page-header">
+                <div class="page-icon"><i class="fas fa-clock"></i></div>
+                <h1 class="page-title">Daily Schedule</h1>
+            </div>
 
-                    <div style="display: grid; gap: 1rem;">
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">07:00</strong> - Aufstehen & Frühstück (Wake up & Breakfast)
+            <div class="content-card">
+                <h2 style="text-align: center; color: var(--accent); margin-bottom: 1rem;">
+                    Gesunder Tagesablauf während der Pandemie
+                </h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem; font-size: 1.2rem;">
+                    Healthy Daily Schedule During the Pandemie
+                </p>
+
+                <div class="schedule-container">
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-sun"></i> 07:00 — Aufstehen & Frühstück
                         </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">08:00-12:00</strong> - Schule / Lernen (School / Learning)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">12:00-13:00</strong> - Mittagessen (Lunch)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">13:00-15:00</strong> - Sport / Bewegung (Sports / Exercise)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">15:00-17:00</strong> - Lernen / Projekte (Learning / Projects)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">17:00-18:00</strong> - Freizeit (Free time)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">18:00-19:00</strong> - Abendessen (Dinner)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">19:00-20:00</strong> - Entspannung (Relaxation)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">20:00-21:00</strong> - Vorbereitung (Preparation)
-                        </div>
-                        <div style="background: rgba(124, 58, 237, 0.2); padding: 1.5rem; border-radius: 15px; border-left: 4px solid var(--primary);">
-                            <strong style="color: var(--accent);">21:30</strong> - Schlafenszeit (Bedtime)
-                        </div>
+                        <div class="schedule-desc">Ich wache auf und frühstücke. Ich esse Obst oder Müsli.</div>
+                        <div class="schedule-trans">Wake up and have breakfast. Eat fruit or cereal.</div>
                     </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-laptop"></i> 08:00–12:00 — Schule / Lernen
+                        </div>
+                        <div class="schedule-desc">Ich mache Online-Unterricht oder Hausaufgaben.</div>
+                        <div class="schedule-trans">Online classes or homework</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-utensils"></i> 12:00–13:00 — Mittagessen
+                        </div>
+                        <div class="schedule-desc">Ich esse gesundes Essen. Danach mache ich eine Pause.</div>
+                        <div class="schedule-trans">Eat healthy food, then take a break</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-running"></i> 13:00–15:00 — Sport / Bewegung
+                        </div>
+                        <div class="schedule-desc">Ich gehe spazieren, jogge oder mache Übungen.</div>
+                        <div class="schedule-trans">Go walking, jogging, or do exercises</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-book"></i> 15:00–17:00 — Lernen / Projekte
+                        </div>
+                        <div class="schedule-desc">Ich übe Fächer oder arbeite an Projekten.</div>
+                        <div class="schedule-trans">Practice subjects or work on projects</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-gamepad"></i> 17:00–18:00 — Freizeit
+                        </div>
+                        <div class="schedule-desc">Ich lese, höre Musik oder spiele.</div>
+                        <div class="schedule-trans">Read, listen to music, or play</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-utensils"></i> 18:00–19:00 — Abendessen
+                        </div>
+                        <div class="schedule-desc">Ich esse mit meiner Familie und wir reden über den Tag.</div>
+                        <div class="schedule-trans">Dinner with family, discuss the day</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-spa"></i> 19:00–20:00 — Entspannung
+                        </div>
+                        <div class="schedule-desc">Ich meditiere oder schreibe Tagebuch.</div>
+                        <div class="schedule-trans">Meditation or journaling</div>
+                    </div>
+
+                    <div class="scheduleschedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-tasks"></i> 20:00–21:00 — Vorbereitung für morgen
+                        </div>
+                        <div class="schedule-desc">Ich organisiere meine Sachen und lese ein wenig.</div>
+                        <div class="schedule-trans">Prepare for tomorrow, read a bit</div>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <i class="fas fa-moon"></i> 21:30 — Schlafenszeit
+                        </div>
+                        <div class="schedule-desc">Ich gehe schlafen, um gesund zu bleiben.</div>
+                        <div class="schedule-trans">Go to sleep to stay healthy</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; text-align: center; background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%); padding: 2rem; border-radius: 20px;">
+                    <h3 style="color: var(--text); margin-bottom: 1rem;">Beginne deinen Tag mit Energie!</h3>
+                    <p style="color: var(--text-muted);">Start your day with energy! A healthy routine maintains wellbeing.</p>
                 </div>
             </div>
         </div>
@@ -924,8 +791,17 @@
             document.getElementById('subjects-dropdown').classList.remove('show');
         }
 
-        function toggleSubjects() {
-            document.getElementById('subjects-dropdown').classList.toggle('show');
+        function openSubjectsDropdown() {
+            const dropdown = document.getElementById('subjects-dropdown');
+            dropdown.classList.toggle('show');
+
+            // Auto-close after 3 seconds if not hovered
+            setTimeout(() => {
+                if (!document.getElementById('subjects-nav').matches(':hover') && 
+                    !dropdown.matches(':hover')) {
+                    dropdown.classList.remove('show');
+                }
+            }, 3000);
         }
 
         // Dropdown hover functionality
