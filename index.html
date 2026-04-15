@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Project - School Presentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --dark: #0f0f1a;
+            --darker: #0a0a12;
+            --card: #1a1a2e;
+            --card-hover: #252542;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --gradient-1: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            --gradient-2: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--darker);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-5%, -5%) rotate(5deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 5% 4rem;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .members {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero .members strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(124, 58, 237, 0.6);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Subject Cards */
+        .subjects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .subject-card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 25px 50px rgba(124, 58, 237, 0.4);
+        }
+
+        .subject-header {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .subject-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .subject-content {
+            padding: 1.5rem;
+        }
+
+        .subject-content p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .btn-view {
+            width: 100%;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-view:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.5);
+        }
+
+        /* Language Sections */
+        .language-section {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .comic-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .comic-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .comic-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            background: var(--card);
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: var(--gradient-1);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .comparison-table td {
+            background: var(--darker);
+        }
+
+        .comparison-table tr:hover td {
+            background: var(--card-hover);
+        }
+
+        /* Schedule Section */
+        .schedule-section {
+            background: var(--card);
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .schedule-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .schedule-item {
+            background: var(--darker);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .schedule-item:hover {
+            transform: translateX(10px);
+            border-left-color: var(--secondary);
+        }
+
+        .schedule-time {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-desc {
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        footer p {
+            color: var(--text-muted);
+        }
+
+        /* Modal for viewing content */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-content {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .subjects-container { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.9rem; }
+            .comparison-table th,
+            .comparison-table td { padding: 1rem; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Integrated Project
+        </a>
+        <div class="nav-links">
+            <a href="#subjects">Subjects</a>
+            <a href="#languages">Languages</a>
+            <a href="#comparison">Comparison</a>
+            <a href="#schedule">Schedule</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Integrated Project</h1>
+            <div class="members">
+                <strong>Group Members:</strong><br>
+                Selim, Hamza K, Malak, Rokaya, Youssef, Mahmoud, Renad, Farida
+            </div>
+            <button class="btn btn-primary" onclick="scrollToSection('subjects')">
+                <i class="fas fa-book-open"></i> Explore Subjects
+            </button>
+        </div>
+    </section>
+
+    <!-- Subjects Section -->
+    <section id="subjects">
+        <h2 class="section-title">Academic Subjects</h2>
+        <p class="section-subtitle">Explore our comprehensive school curriculum</p>
+        <div class="subjects-container">
+            <div class="subject-card" onclick="openSubjectModal('English')">
+                <div class="subject-header">
+                    <div class="subject-icon"><i class="fas fa-language"></i></div>
+                    <div class="subject-title">English</div>
+                </div>
+                <div class="subject-content">
+                    <p>Study of English language, literature, grammar, and communication skills.</p>
+                    <button class="btn-view">View Content</button>
+                </div>
+            </div>
+
+            <div class="subject-card" onclick="openSubjectModal('Math')">
+                <div class="subject-header">
+                    <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                    <div class="subject-title">Mathematics</div>
+                </div>
+                <div class="subject-content">
+                    <p>Algebra, geometry, calculus, statistics, and problem-solving techniques.</p>
+                    <button class="btn-view">View Content</button>
+                </div>
+            </div>
+
+            <div class="subject-card" onclick="openSubjectModal('Arabic')">
+                <div class="subject-header">
+                    <div class="subject-icon"><i class="fas fa-book"></i></div>
+                    <div class="subject-title">Arabic</div>
+                </div>
+                <div class="subject-content">
+                    <p>Arabic language studies including grammar, literature, and composition.</p>
+                    <button class="btn-view">View Content</button>
+                </div>
+            </div>
+
+            <div class="subject-card" onclick="openSubjectModal('Social')">
+                <div class="subject-header">
+                    <div class="subject-icon"><i class="fas fa-globe"></i></div>
+                    <div class="subject-title">Social Studies</div>
+                </div>
+                <div class="subject-content">
+                    <p>History, geography, civics, and understanding of societies and cultures.</p>
+                    <button class="btn-view">View Content</button>
+                </div>
+            </div>
+
+            <div class="subject-card" onclick="openSubjectModal('French')">
+                <div class="subject-header">
+                    <div class="subject-icon"><i class="fas fa-wine-glass"></i></div>
+                    <div class="subject-title">French</div>
+                </div>
+                <div class="subject-content">
+                    <p>French language learning including vocabulary, grammar, and conversation.</p>
+                    <button class="btn-view">View Content</button>
+                </div>
+            </div>
+
+            <div class="subject-card" onclick="openSubjectModal('German')">
+                <div class="subject-header">
+                    <div class="subject-icon"><i class="fas fa-beer"></i></div>
+                    <div class="subject-title">German</div>
+                </div>
+                <div class="subject-content">
+                    <p>German language studies, vocabulary, grammar, and cultural insights.</p>
+                    <button class="btn-view">View Content</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Languages Section with Comics -->
+    <section id="languages">
+        <div class="language-section">
+            <h2 class="section-title"><i class="fas fa-globe-europe"></i> Language Learning</h2>
+            <p class="section-subtitle">Visual learning through illustrated stories</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 3rem; margin-top: 3rem;">
+                <!-- German Comic -->
+                <div style="text-align: center;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--accent);">
+                        <i class="fas fa-beer"></i> German - Mein Gesunder Alltag
+                    </h3>
+                    <div class="comic-container">
+                        <img src="german_comic.jpg" alt="German Daily Routine Comic" class="comic-image" style="max-width: 100%; border-radius: 15px;">
+                    </div>
+                    <p style="color: var(--text-muted); margin-top: 1rem; font-style: italic;">
+                        "Mein gesunder Alltag" - A healthy daily routine in German
+                    </p>
+                </div>
+
+                <!-- French Comic -->
+                <div style="text-align: center;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--secondary);">
+                        <i class="fas fa-wine-glass"></i> French - La Routine Quotidienne
+                    </h3>
+                    <div class="comic-container">
+                        <img src="french_comic.jpg" alt="French Daily Routine Comic" class="comic-image" style="max-width: 100%; border-radius: 15px;">
+                    </div>
+                    <p style="color: var(--text-muted); margin-top: 1rem; font-style: italic;">
+                        "La routine quotidienne de Marie" - Marie's daily routine in French
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison">
+        <div class="comparison-section">
+            <h2 class="section-title">Health Comparison</h2>
+            <p class="section-subtitle">Understanding the differences between Flu and COVID-19</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Flu</th>
+                        <th>Both</th>
+                        <th>COVID-19</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Caused by influenza viruses</td>
+                        <td>Spread by close contact</td>
+                        <td>Caused by coronavirus SARS-CoV-2</td>
+                    </tr>
+                    <tr>
+                        <td>Symptoms start 1-4 days after infection</td>
+                        <td>Similar symptoms like fever, cough</td>
+                        <td>Symptoms start 2-14 days after infection</td>
+                    </tr>
+                    <tr>
+                        <td>Shorter contagious period</td>
+                        <td>Can be severe for some people</td>
+                        <td>Longer contagious period</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule">
+        <div class="schedule-section">
+            <h2 class="section-title">Healthy Daily Schedule</h2>
+            <p class="section-subtitle">Gesunder Tagesablauf während der Pandemie</p>
+
+            <ul class="schedule-list">
+                <li class="schedule-item">
+                    <div class="schedule-time">07:00 — Aufstehen & Frühstück</div>
+                    <div class="schedule-desc">Ich wache auf und frühstücke. Ich esse Obst oder Müsli.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">08:00–12:00 — Schule / Lernen</div>
+                    <div class="schedule-desc">Ich mache Online-Unterricht oder Hausaufgaben.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">12:00–13:00 — Mittagessen</div>
+                    <div class="schedule-desc">Ich esse gesundes Essen. Danach mache ich eine Pause.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">13:00–15:00 — Sport / Bewegung</div>
+                    <div class="schedule-desc">Ich gehe spazieren, jogge oder mache Übungen.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">15:00–17:00 — Lernen / Projekte</div>
+                    <div class="schedule-desc">Ich übe Fächer oder arbeite an Projekten.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">17:00–18:00 — Freizeit</div>
+                    <div class="schedule-desc">Ich lese, höre Musik oder spiele.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">18:00–19:00 — Abendessen</div>
+                    <div class="schedule-desc">Ich esse mit meiner Familie und wir reden über den Tag.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">19:00–20:00 — Entspannung</div>
+                    <div class="schedule-desc">Ich meditiere oder schreibe Tagebuch.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">20:00–21:00 — Vorbereitung für morgen</div>
+                    <div class="schedule-desc">Ich organisiere meine Sachen und lese ein wenig.</div>
+                </li>
+                <li class="schedule-item">
+                    <div class="schedule-time">21:30 — Schlafenszeit</div>
+                    <div class="schedule-desc">Ich gehe schlafen, um gesund zu bleiben.</div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h3>Integrated Project</h3>
+        <p>Presented by: Selim, Hamza K, Malak, Rokaya, Youssef, Mahmoud, Renad, Farida</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">School Project 2026</p>
+    </footer>
+
+    <!-- Subject Modal -->
+    <div class="modal-overlay" id="subject-modal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <h2 id="modal-title">Subject Title</h2>
+            <div class="modal-content" id="modal-content">
+                Subject content will appear here...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Subject content data
+        const subjectData = {
+            'English': `
+                <h3>English Language Studies</h3>
+                <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                    <li>Grammar and syntax</li>
+                    <li>Literature analysis</li>
+                    <li>Creative writing</li>
+                    <li>Public speaking</li>
+                    <li>Reading comprehension</li>
+                    <li>Vocabulary building</li>
+                </ul>
+                <p style="margin-top: 1rem;">English is essential for global communication and academic success.</p>
+            `,
+            'Math': `
+                <h3>Mathematics</h3>
+                <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                    <li>Algebra and equations</li>
+                    <li>Geometry and shapes</li>
+                    <li>Calculus</li>
+                    <li>Statistics and probability</li>
+                    <li>Problem-solving strategies</li>
+                    <li>Mathematical reasoning</li>
+                </ul>
+                <p style="margin-top: 1rem;">Mathematics develops logical thinking and analytical skills.</p>
+            `,
+            'Arabic': `
+                <h3>Arabic Language</h3>
+                <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                    <li>Grammar (Nahw and Sarf)</li>
+                    <li>Classical literature</li>
+                    <li>Composition writing</li>
+                    <li>Reading comprehension</li>
+                    <li>Poetry analysis</li>
+                    <li>Calligraphy</li>
+                </ul>
+                <p style="margin-top: 1rem;">Arabic is a rich language with deep historical and cultural significance.</p>
+            `,
+            'Social': `
+                <h3>Social Studies</h3>
+                <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                    <li>World history</li>
+                    <li>Geography and maps</li>
+                    <li>Civics and government</li>
+                    <li>Cultural studies</li>
+                    <li>Economics basics</li>
+                    <li>Current events</li>
+                </ul>
+                <p style="margin-top: 1rem;">Social studies helps us understand our world and our place in it.</p>
+            `,
+            'French': `
+                <h3>French Language</h3>
+                <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                    <li>French vocabulary</li>
+                    <li>Grammar and conjugation</li>
+                    <li>Conversation practice</li>
+                    <li>Reading French texts</li>
+                    <li>French culture</li>
+                    <li>Listening comprehension</li>
+                </ul>
+                <p style="margin-top: 1rem;">French is spoken by millions worldwide and is a language of diplomacy and culture.</p>
+            `,
+            'German': `
+                <h3>German Language</h3>
+                <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                    <li>German vocabulary</li>
+                    <li>Grammar cases</li>
+                    <li>Conversation skills</li>
+                    <li>Reading comprehension</li>
+                    <li>German culture and traditions</li>
+                    <li>Writing practice</li>
+                </ul>
+                <p style="margin-top: 1rem;">German is the most widely spoken language in the European Union.</p>
+            `
+        };
+
+        function openSubjectModal(subject) {
+            document.getElementById('modal-title').textContent = subject;
+            document.getElementById('modal-content').innerHTML = subjectData[subject] || 'Content coming soon...';
+            document.getElementById('subject-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('subject-modal').classList.remove('active');
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('subject-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
