@@ -1,514 +1,262 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrated Project</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integrated Project</title>
 
-        :root {
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
-            --secondary: #ec4899;
-            --accent: #f59e0b;
-            --dark: #0f0f1a;
-            --darker: #0a0a12;
-            --card: #1a1a2e;
-            --card-hover: #252542;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --gradient-1: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--darker);
-            color: var(--text);
-            line-height: 1.6;
-        }
+<style>
+body {
+    margin:0;
+    font-family:sans-serif;
+    background:#0f0f1a;
+    color:white;
+}
 
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: var(--darker);
-        }
+/* NAV */
+nav {
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#111;
+    padding:15px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    z-index:1000;
+}
 
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
-            animation: bgMove 20s ease-in-out infinite;
-        }
+.nav-item {
+    cursor:pointer;
+    padding:10px 15px;
+    border-radius:20px;
+}
 
-        @keyframes bgMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(-5%, -5%) rotate(5deg); }
-        }
+.nav-item:hover {
+    background:#333;
+}
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.2rem 5%;
-            background: rgba(15, 15, 26, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+/* DROPDOWN */
+.dropdown {
+    display:none;
+    position:absolute;
+    top:50px;
+    background:#222;
+    padding:10px;
+    border-radius:10px;
+}
 
-        .nav-container {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
+.dropdown.show {
+    display:block;
+}
 
-        .nav-item {
-            cursor: pointer;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: transparent;
-            border: none;
-            color: var(--text);
-            font-family: inherit;
-        }
+.dropdown-item {
+    padding:10px;
+    cursor:pointer;
+}
 
-        .nav-item:hover, .nav-item.active {
-            background: var(--gradient-1);
-            color: white;
-        }
+.dropdown-item:hover {
+    background:#444;
+}
 
-        /* Dropdown */
-        .dropdown-container {
-            position: relative;
-        }
+/* PAGES */
+.page {
+    display:none;
+    padding-top:100px;
+}
 
-        .dropdown {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card);
-            border-radius: 20px;
-            padding: 1rem;
-            min-width: 220px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            display: none;
-            margin-top: 0.5rem;
-        }
+.page.active {
+    display:block;
+}
 
-        .dropdown.show {
-            display: block;
-        }
+/* HOME */
+.home-page {
+    text-align:center;
+}
 
-        .dropdown-item {
-            padding: 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
+.members-box {
+    margin-top:30px;
+}
 
-        .dropdown-item:hover {
-            background: var(--gradient-1);
-            transform: translateX(5px);
-        }
+/* BUTTON */
+.start-btn {
+    margin-top:20px;
+    padding:15px 25px;
+    border:none;
+    background:purple;
+    color:white;
+    border-radius:20px;
+    cursor:pointer;
+}
 
-        .dropdown-item:last-child {
-            margin-bottom: 0;
-        }
+/* EXPAND */
+#subjects-wrapper {
+    max-height:0;
+    overflow:hidden;
+    transition:0.5s;
+}
 
-        /* Pages */
-        .page {
-            display: none;
-            min-height: 100vh;
-            padding-top: 100px;
-        }
+#subjects-wrapper.expanded {
+    max-height:500px;
+}
 
-        .page.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
+.subject-preview-card {
+    background:#222;
+    padding:20px;
+    margin:10px;
+    cursor:pointer;
+    border-radius:10px;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.subject-preview-card:hover {
+    background:#444;
+}
 
-        /* Home Page */
-        .home-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 2rem;
-        }
+/* SOCIAL */
+.image-showcase {
+    width:100%;
+    max-width:400px;
+    margin:10px;
+}
 
-        .main-title {
-            font-size: 7rem;
-            font-weight: 900;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            line-height: 1;
-            text-transform: uppercase;
-            letter-spacing: -3px;
-            animation: glow 3s ease-in-out infinite;
-        }
+.table-container {
+    margin-top:20px;
+}
 
-        @keyframes glow {
-            0%, 100% { filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.5)); }
-            50% { filter: drop-shadow(0 0 60px rgba(236, 72, 153, 0.8)); }
-        }
+table {
+    width:100%;
+    border-collapse:collapse;
+}
 
-        .subtitle {
-            font-size: 1.8rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-        }
+td, th {
+    border:1px solid white;
+    padding:10px;
+}
+</style>
 
-        .members-box {
-            background: var(--card);
-            border-radius: 30px;
-            padding: 3rem 4rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 3rem;
-        }
-
-        .members-title {
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-
-        .members-list {
-            font-size: 1.2rem;
-            line-height: 2;
-        }
-
-        .members-list span {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(124, 58, 237, 0.3);
-            border-radius: 20px;
-            margin: 0.3rem;
-        }
-
-        .start-btn {
-            padding: 1.5rem 3rem;
-            font-size: 1.3rem;
-            background: var(--gradient-1);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-family: inherit;
-        }
-
-        .start-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.6);
-        }
-
-        /* Subject Pages */
-        .subject-page {
-            padding: 120px 5% 5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .page-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .page-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .content-card {
-            background: var(--card);
-            border-radius: 30px;
-            padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .image-showcase {
-            width: 100%;
-            max-width: 800px;
-            border-radius: 20px;
-            margin: 2rem auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            display: block;
-        }
-
-        /* Schedule */
-        .schedule-item {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border-left: 5px solid var(--primary);
-        }
-
-        .schedule-time {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .schedule-desc {
-            color: var(--text);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .schedule-trans {
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        /* Table */
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-        }
-
-        .comparison-table th,
-        .comparison-table td {
-            padding: 1.5rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 1rem;
-        }
-
-        .comparison-table th {
-            background: var(--gradient-1);
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .comparison-table td {
-            background: var(--darker);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-title { font-size: 4rem; }
-            .nav-container { gap: 1rem; flex-wrap: wrap; }
-            .nav-item { padding: 0.5rem 1rem; font-size: 0.9rem; }
-            .page-title { font-size: 2.5rem; }
-        }
-    </style>
 </head>
+
 <body>
-    <div class="bg-animation"></div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <button class="nav-item" onclick="showPage('home')">
-                <i class="fas fa-home"></i> Menu
-            </button>
-            
-            <div class="dropdown-container">
-                <button class="nav-item" onclick="toggleDropdown()">
-                    <i class="fas fa-chevron-down"></i> Subjects
-                </button>
-                <div class="dropdown" id="subjects-dropdown">
-                    <div class="dropdown-item" onclick="showPage('english')">
-                        <i class="fas fa-language"></i> English
-                    </div>
-                    <div class="dropdown-item" onclick="showPage('math')">
-                        <i class="fas fa-calculator"></i> Math
-                    </div>
-                    <div class="dropdown-item" onclick="showPage('arabic')">
-                        <i class="fas fa-book"></i> Arabic
-                    </div>
-                    <div class="dropdown-item" onclick="showPage('social')">
-                        <i class="fas fa-globe"></i> Social
-                    </div>
-                    <div class="dropdown-item" onclick="showPage('french')">
-                        <i class="fas fa-wine-glass"></i> French
-                    </div>
-                    <div class="dropdown-item" onclick="showPage('german')">
-                        <i class="fas fa-beer"></i> German
-                    </div>
-                </div>
-            </div>
-            
-            <button class="nav-item" onclick="showPage('work')">
-                <i class="fas fa-images"></i> Work
-            </button>
-            
-            <button class="nav-item" onclick="showPage('table')">
-                <i class="fas fa-table"></i> Table
-            </button>
-            
-            <button class="nav-item" onclick="showPage('schedule')">
-                <i class="fas fa-clock"></i> Schedule
-            </button>
-        </div>
-    </nav>
+<nav>
+<div class="nav-item" onclick="showPage('home')">Menu</div>
 
-    <!-- HOME PAGE -->
-    <div id="home" class="page active">
-        <div class="home-page">
-            <h1 class="main-title">Integrated<br>Project</h1>
-            <p class="subtitle">School Presentation 2026</p>
-            
-            <div class="members-box">
-                <div class="members-title">
-                    <i class="fas fa-users"></i> Group Members
-                </div>
-                <div class="members-list">
-                    <span>Selim</span>
-                    <span>Hamza K</span>
-                    <span>Malak</span>
-                    <span>Rokaya</span>
-                    <span>Youssef</span>
-                    <span>Mahmoud</span>
-                    <span>Renad</span>
-                    <span>Farida</span>
-                </div>
-            </div>
-            
-            <button class="start-btn" onclick="toggleDropdown()">
-                <i class="fas fa-book-open"></i> Explore Subjects
-            </button>
-        </div>
-    </div>
+<div class="nav-item" onclick="toggleSubjects(event)">
+Subjects
+<div class="dropdown" id="subjects-dropdown">
+<div class="dropdown-item" onclick="showPage('english')">English</div>
+<div class="dropdown-item" onclick="showPage('math')">Math</div>
+<div class="dropdown-item" onclick="showPage('arabic')">Arabic</div>
+<div class="dropdown-item" onclick="showPage('social')">Social</div>
+</div>
+</div>
 
-    <!-- ENGLISH PAGE -->
-    <div id="english" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-language"></i></div>
-                <h1 class="page-title">English</h1>
-            </div>
-            <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">English Language Studies</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem;">
-                    English literature, grammar, and composition content will be displayed here.
-                </p>
-            </div>
-        </div>
-    </div>
+<div class="nav-item" onclick="showPage('social')">Social</div>
+</nav>
 
-    <!-- MATH PAGE -->
-    <div id="math" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-calculator"></i></div>
-                <h1 class="page-title">Mathematics</h1>
-            </div>
-            <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">Mathematical Concepts</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem;">
-                    Algebra, geometry, and problem-solving strategies.
-                </p>
-            </div>
-        </div>
-    </div>
+<!-- HOME -->
 
-    <!-- ARABIC PAGE -->
-    <div id="arabic" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-book"></i></div>
-                <h1 class="page-title">Arabic</h1>
-            </div>
-            <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">اللغة العربية</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem;">
-                    Arabic grammar, literature, and composition.
-                </p>
-            </div>
-        </div>
-    </div>
+<div id="home" class="page active">
+<div class="home-page">
 
-    <!-- SOCIAL PAGE -->
-    <div id="social" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-globe"></i></div>
-                <h1 class="page-title">Social Studies</h1>
-            </div>
-            <div class="content-card">
-                <h2 style="color: var(--accent); margin-bottom: 1rem;">History & Geography</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem;">
-                    Historical events and geographical studies.
-                </p>
-            </div>
-        </div>
-    </div>
+<h1>Integrated Project</h1>
 
-    <!-- FRENCH PAGE WITH EMBEDDED IMAGE -->
-    <div id="french" class="page">
-        <div class="subject-page">
-            <div class="page-header">
-                <div class="page-icon"><i class="fas fa-wine-glass"></i></div>
-                <h1 class="page-title">French</h1>
-            </div>
-            <div class="content-card">
-                <h2 style="color: var(--accent); text-align: center; margin-bottom: 1rem;">La Routine Quotidienne de Marie</h2>
-                <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">
-                    A visual story about Marie's daily routine in French
-                </p>
-                
-                <!-- FRENCH COMIC IMAGE EMBEDDED -->
-                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAY1BjgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD2Wiiivnj7UKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooo
+<div class="members-box">
+<p>Group Members:</p>
+<p>Selim, Hamza, Malak, Rokaya</p>
+</div>
+
+<button onclick="toggleExpand()" class="start-btn">
+Expand Subjects ⬇
+</button>
+
+<div id="subjects-wrapper">
+<div style="display:grid; grid-template-columns:repeat(2,1fr);">
+
+<div class="subject-preview-card" onclick="showPage('english')">English</div>
+<div class="subject-preview-card" onclick="showPage('math')">Math</div>
+<div class="subject-preview-card" onclick="showPage('arabic')">Arabic</div>
+<div class="subject-preview-card" onclick="showPage('social')">Social</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SUBJECT PAGES -->
+
+<div id="english" class="page"><h1>English</h1></div>
+<div id="math" class="page"><h1>Math</h1></div>
+<div id="arabic" class="page"><h1>Arabic</h1></div>
+
+<!-- SOCIAL -->
+
+<div id="social" class="page">
+<h1>Social Studies</h1>
+
+<!-- MIXED IMAGES -->
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/800px-World_map_-_low_resolution.svg.png" class="image-showcase">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/People_network.svg/800px-People_network.svg.png" class="image-showcase">
+
+<!-- TABLE -->
+
+<div class="table-container">
+<table>
+<tr>
+<th>Topic</th>
+<th>Details</th>
+</tr>
+
+<tr>
+<td>Community</td>
+<td>People working together</td>
+</tr>
+
+<tr>
+<td>World</td>
+<td>Countries connected</td>
+</tr>
+
+<tr>
+<td>Culture</td>
+<td>Different traditions</td>
+</tr>
+
+</table>
+</div>
+
+</div>
+
+<script>
+
+/* PAGE SWITCH */
+function showPage(pageId) {
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.getElementById(pageId).classList.add('active');
+}
+
+/* DROPDOWN */
+function toggleSubjects(e) {
+e.stopPropagation();
+document.getElementById("subjects-dropdown").classList.toggle("show");
+}
+
+document.addEventListener("click", () => {
+document.getElementById("subjects-dropdown").classList.remove("show");
+});
+
+/* EXPAND */
+function toggleExpand() {
+document.getElementById("subjects-wrapper").classList.toggle("expanded");
+}
+
+</script>
+
+</body>
+</html>
